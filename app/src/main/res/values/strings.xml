@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Movies by AZ</string>
+    <string name="popular_movies">Popular movies</string>
+    <string name="error_fetch_movies">Please check your internet connection</string>
+    <string name="large_text">
+        "A material metaphor is the unifying theory of a rationalized space and a system of motion."
+        "The material is grounded in tactile reality, inspired by the study of paper and ink, yet "
+        "technologically advanced and open to imagination and magic.\n"
+    </string>
+    <string name="connection_error">Can\'t connect. \n Please check your internet connection.</string>
+    <string name="movie">- Movie -</string>
+    <string name="sub_title">Sub title</string>
+    <string name="release_date">Release date:</string>
+    <string name="rating">Rating: </string>
+    <string name="runtime">Runtime: </string>
+    <string name="budget">"Budget: "</string>
+    <string name="revenue">"Revenue: "</string>
+    <string name="overview">- OVERVIEW -</string>
+    <string name="status">Status</string>
+</resources>
