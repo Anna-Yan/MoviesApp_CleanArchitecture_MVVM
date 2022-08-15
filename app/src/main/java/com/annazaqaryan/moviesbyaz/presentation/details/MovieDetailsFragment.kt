@@ -8,7 +8,6 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.annazaqaryan.moviesbyaz.domain.model.MovieDetailsResponse
 import com.bumptech.glide.Glide
-import com.annazaqaryan.moviesbyaz.R
 import com.annazaqaryan.moviesbyaz.data.source.remote.ApiService.Companion.POSTER_BASE_URL
 import com.annazaqaryan.moviesbyaz.databinding.FragmentMovieDetailsBinding
 import com.annazaqaryan.moviesbyaz.domain.repository.SingleResult
@@ -19,7 +18,7 @@ import java.util.*
 
 class MovieDetailsFragment : Fragment() {
 
-    private var binding: FragmentMovieDetailsBinding? = null
+    private lateinit var binding: FragmentMovieDetailsBinding
     private val detailViewModel: MovieDetailViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,47 +32,48 @@ class MovieDetailsFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_movie_details, container, false)
+    ): View {
+        binding = FragmentMovieDetailsBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentMovieDetailsBinding.bind(view)
         getMovieDetails()
     }
 
     private fun getMovieDetails() {
         detailViewModel.getMovieDetails()
 
-        detailViewModel.movieDetails.observe(viewLifecycleOwner, {
-            binding!!.progressBar.isVisible = false
+        detailViewModel.movieDetails.observe(viewLifecycleOwner) {
+            binding.progressBar.isVisible = false
             if (it is SingleResult.Success) {
                 bindUI(it.data)
-            }
-            else {
+            } else {
                 requireContext().toast("Failed to get Details")
             }
-        })
-        binding!!.progressBar.isVisible = true
+        }
+        binding.progressBar.isVisible = true
     }
 
-    fun bindUI( it: MovieDetailsResponse){
-        binding!!.movieTitle.text = it.title
-        binding!!.movieStatus.text = it.status
-        binding!!.movieTagline.text = it.tagline
-        binding!!.movieReleaseDate.text = it.release_date
-        binding!!.movieRating.text = it.vote_average.toString()
-        binding!!.movieRuntime.text = "${it.runtime} +  minutes"
-        binding!!.movieOverview.text = it.overview
+    private fun bindUI(it: MovieDetailsResponse){
 
+        with(binding){
+            this.movieTitle.text = it.title
+            this.movieStatus.text = it.status
+            this.movieTagline.text = it.tagline
+            this.movieReleaseDate.text = it.release_date
+            this.movieRating.text = it.vote_average.toString()
+            this.movieRuntime.text = "${it.runtime} +  minutes"
+            this.movieOverview.text = it.overview
+        }
         val formatCurrency = NumberFormat.getCurrencyInstance(Locale.US)
-        binding!!.movieBudget.text = formatCurrency.format(it.budget)
+        binding.movieBudget.text = formatCurrency.format(it.budget)
 
         val moviePosterURL = POSTER_BASE_URL + it.poster_path
         Glide.with(this)
             .load(moviePosterURL)
-            .into(binding!!.ivMoviePoster);
+            .into(binding.ivMoviePoster);
     }
 
 }

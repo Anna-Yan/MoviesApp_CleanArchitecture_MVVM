@@ -21,9 +21,5 @@
             </intent-filter>
         </activity>
 
-        <service
-            android:name=".MovieService"
-            android:permission="android.permission.BIND_JOB_SERVICE" />
-
     </application>
 </manifest>
